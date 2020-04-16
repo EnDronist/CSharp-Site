@@ -1,0 +1,25 @@
+.employeeCreator {
+    // Display
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // Positioning
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    > * {
+        width: 90%;
+        border-radius: 5px;
+        background: white;
+        font-size: 16px;
+        &.incorrect {
+            background: #ffafaf;
+        }
+    }
+    .employeeCreate__name { color: #006f00 }
+    .employeeCreate__surname { color: #006f5f }
+    .employeeCreate__patronymic { color: #00679f }
+    .employeeCreate__department { color: #0020d8 }
+    .employeeCreate__position { color: #6700c7 }
+    .employeeCreate__supervisor { color: #bf00c5 }
+}

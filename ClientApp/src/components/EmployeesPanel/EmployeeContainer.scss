@@ -1,0 +1,26 @@
+.employeeContainer {
+    width: 100%; max-width: min-content;
+    margin: 5px;
+    border-radius: 5px;
+    padding: 5px;
+    background: #62ffe5;
+    &.selected {
+        background: #20ccaf;
+    }
+    > * {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        font-weight: bold;
+        // Text hiding
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .employeeContainer__name { color: #006f00 }
+    .employeeContainer__surname { color: #006f5f }
+    .employeeContainer__patronymic { color: #00679f }
+    .employeeContainer__department { color: #0020d8 }
+    .employeeContainer__position { color: #6700c7 }
+    .employeeContainer__supervisor { color: #bf00c5 }
+    .employeeContainer__jobStartDate { color: #d60000 }
+}

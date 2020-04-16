@@ -1,0 +1,35 @@
+.employeesPanel__buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .button {
+        // Special
+        user-select: none;
+        cursor: pointer;
+        // Display
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        // Positioning
+        width: 100px;
+        height: 30px;
+        margin: 5px;
+        border-radius: 5px;
+        padding: 5px;
+        box-sizing: border-box;
+        // Font
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 16px;
+        &.next,
+        &.previous { background: #ffff7f;}
+        &.get { background: #7f7fff; }
+        &.put { background: #7fff7f; }
+        &.delete { background: #ff7f7f; }
+        // Disables
+        &.disabled {
+            cursor: unset;
+            opacity: 50%;
+        }
+    }
+}

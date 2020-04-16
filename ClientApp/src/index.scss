@@ -1,0 +1,23 @@
+// Reset
+@import './reset.scss';
+
+body {
+    display: flex;
+    background: #5f5f5f;
+    // Large screen
+    @media(min-width: 400px) {
+        justify-content: center;
+        #root {
+            width: 400px; max-width: 400px;
+        }
+    }
+    // Small screen
+    @media(max-width: 400px - 1px) {
+        #root {
+            width: 400px; min-width: 400px;
+        }
+    }
+}
+
+// Styles
+@import 'components/EmployeesPanel/EmployeesPanel.scss';

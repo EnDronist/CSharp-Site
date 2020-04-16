@@ -1,0 +1,7 @@
+.employeesPanel {
+    display: flex;
+    flex-direction: column;
+    @import './EmployeeCreator.scss';
+    @import './EmployeesButtons.scss';
+    @import './EmployeesList.scss';
+}

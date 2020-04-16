@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +8,7 @@ using Microsoft.Extensions.Logging;
 
 using DNS_Site.API;
 using DNS_Site.Database;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,14 +20,19 @@ namespace DNS_Site.Controllers
     {
         private const int _pageSize = 5;
         private readonly ILogger<EmployeesController> _logger;
-        public EmployeesController(ILogger<EmployeesController> logger)
-        {
+        private readonly IActionContextAccessor _accessor;
+        public EmployeesController(
+            ILogger<EmployeesController> logger,
+            IActionContextAccessor accessor
+        ) {
             _logger = logger;
+            _accessor = accessor;
         }
 
         [HttpGet]
         public async Task<IEnumerable<Employee.GetResponse>> Get([FromQuery] int page = 0)
         {
+            var ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
             // Database query
             // There is "LocalSqlServer", web.config is not working
             //var connectionString = ConfigurationManager.ConnectionStrings;
@@ -56,18 +60,21 @@ namespace DNS_Site.Controllers
                 reader.Close();
                 connection.Close();
             }
+            _logger.LogInformation($"Sended with code {Response.StatusCode} to {ipAddress}");
             return result;
         }
 
         [HttpPut]
         public async Task<Employee.PutResponse> Put([FromBody] Employee.PutRequest body)
         {
+            var ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
             var returnValue = new Employee.PutResponse();
             // Validation
             var errors = await Employee.PutRequest.Validation(body);
             if (errors.Count() != 0)
             {
                 returnValue.ValidationErrors = errors;
+                _logger.LogInformation($"Sended with code {Response.StatusCode} and validation errors to {ipAddress}");
                 return returnValue;
             }
             // Database query
@@ -108,6 +115,7 @@ namespace DNS_Site.Controllers
                 // Closing connection
                 connection.Close();
             }
+            _logger.LogInformation($"Sended with code {Response.StatusCode} to {ipAddress}");
             return returnValue;
         }
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +21,12 @@ namespace DNS_Site {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-            services.AddControllersWithViews();
+            services.AddControllers();
+            services.AddMvc(options =>
+            {
+                options.EnableEndpointRouting = false;
+            });
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => {
@@ -52,19 +58,14 @@ namespace DNS_Site {
             app.Use(async (context, next) =>
             {
                 logger.LogInformation("Start");
-                await next.Invoke();
+                await next();
                 logger.LogInformation("End");
             });
 
-            // Using controllers
-            app.UseEndpoints(endpoints => {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action}"
-                    //defaults: new { controller = "Default", action = "Index" }
-                );
-            });
+            // Using MVC controllers
+            app.UseMvc();
 
+            // Ending request or sending SPA
             app.Use(async (context, next) =>
             {
                 logger.LogInformation("Not found! " + context.Request.Path.ToString());

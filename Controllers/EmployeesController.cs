@@ -122,10 +122,12 @@ namespace DNS_Site.Controllers
         [HttpDelete]
         public async Task Delete([FromQuery]int? id)
         {
+            var ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
             // Check parameters
             if (id == null)
             {
                 Response.StatusCode = 400; /* Bad Request */
+                _logger.LogInformation($"Sended with code {Response.StatusCode} to {ipAddress}");
                 return;
             }
             // Database query
@@ -148,6 +150,7 @@ namespace DNS_Site.Controllers
                     if (reader.Read() && reader.GetInt32(0) == 0)
                     {
                         Response.StatusCode = 404; /* Not Found */
+                        _logger.LogInformation($"Sended with code {Response.StatusCode} to {ipAddress}");
                         return;
                     }
                     reader.Close();
@@ -180,6 +183,7 @@ namespace DNS_Site.Controllers
                 }
                 // Finishing
                 Response.StatusCode = 200; /* OK */
+                _logger.LogInformation($"Sended with code {Response.StatusCode} to {ipAddress}");
                 return;
             }
         }

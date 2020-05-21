@@ -68,7 +68,6 @@ namespace DNS_Site {
             // Ending request or sending SPA
             app.Use(async (context, next) =>
             {
-                logger.LogInformation("Not found! " + context.Request.Path.ToString());
                 // If request is API
                 if (Regex.Matches(context.Request.Path.ToString(), "^/api/.*").Count != 0)
                 {
@@ -78,6 +77,8 @@ namespace DNS_Site {
                 // If request is not API
                 else
                 {
+                    if (context.Request.Path.ToString() != "/")
+                        logger.LogInformation("Not found! " + context.Request.Path.ToString());
                     // To SPA middleware
                     await next.Invoke();
                 }

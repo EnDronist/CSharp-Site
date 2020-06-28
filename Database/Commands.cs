@@ -70,10 +70,10 @@ namespace DNS_Site.Database
                 // Filling parameters
                 command.Parameters.AddWithValue("@Name", data.Name);
                 command.Parameters.AddWithValue("@Surname", data.Surname);
-                command.Parameters.AddWithValue("@Patronymic", data.Patronymic);
+                command.Parameters.AddWithValue("@Patronymic", (object)data.Patronymic ?? DBNull.Value);
                 command.Parameters.AddWithValue("@Department", data.Department);
                 command.Parameters.AddWithValue("@Position", data.Position);
-                command.Parameters.AddWithValue("@Supervisor", data.Supervisor);
+                command.Parameters.AddWithValue("@Supervisor", (object)data.Supervisor ?? DBNull.Value);
                 // Executing
                 var reader = await command.ExecuteReaderAsync();
                 // Reading query result

@@ -90,25 +90,28 @@ namespace DNS_Site.API
                     errors.Add(fieldName, $"Incorrect \"{fieldName}\" field value");
                 // Supervisor
                 fieldName = nameof(obj.Supervisor).ToCamelCase();
-                using (var connection = new SqlConnection(ConnectionStrings.Default))
+                if (obj.Supervisor != null)
                 {
-                    // Opening connection
-                    connection.Open();
-                    // Configuring command
-                    var command = new SqlCommand(@"
-                        select count(*) from [Employees]
-                            where [Id] = @Supervisor;
-                    ", connection);
-                    // Filling parameters
-                    command.Parameters.AddWithValue("@Supervisor", obj.Supervisor);
-                    // Executing
-                    var reader = await command.ExecuteReaderAsync();
-                    // Reading query result
-                    if (reader.Read() && reader.GetInt32(0) == 0)
-                        errors.Add(fieldName, $"Specified \"{fieldName}\" not exists");
-                    reader.Close();
-                    // Closing connection
-                    connection.Close();
+                    using (var connection = new SqlConnection(ConnectionStrings.Default))
+                    {
+                        // Opening connection
+                        connection.Open();
+                        // Configuring command
+                        var command = new SqlCommand(@"
+                            select count(*) from [Employees]
+                                where [Id] = @Supervisor;
+                        ", connection);
+                        // Filling parameters
+                        command.Parameters.AddWithValue("@Supervisor", (object)obj.Supervisor ?? DBNull.Value);
+                        // Executing
+                        var reader = await command.ExecuteReaderAsync();
+                        // Reading query result
+                        if (reader.Read() && reader.GetInt32(0) == 0)
+                            errors.Add(fieldName, $"Specified \"{fieldName}\" not exists");
+                        reader.Close();
+                        // Closing connection
+                        connection.Close();
+                    }
                 }
                 // Result
                 return errors;
